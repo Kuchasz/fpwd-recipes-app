@@ -1,0 +1,18 @@
+md-list-item:hover {
+  background: #eee;
+}
+
+md-list-item {
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+md-list-item:hover md-icon {
+  transform: rotate(-15deg);
+}
+
+md-list-item md-icon {
+  transition: all 0.25s ease-out;
+  transform-origin: 50% 10%;
+}
+

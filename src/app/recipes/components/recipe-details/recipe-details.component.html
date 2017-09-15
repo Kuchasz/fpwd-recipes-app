@@ -1,0 +1,12 @@
+<md-card *ngIf="recipe">
+  <md-card-header>{{recipe.name}}</md-card-header>
+  <md-card-content>
+    <md-list>
+      <md-list-item isRippleEnabled="true" *ngFor="let item of recipe.ingredients">
+        <p mdLine>{{ingredients[item.ingredient]}}</p>
+        <md-divider></md-divider>
+        <p mdLine>{{item.amount}} {{units[item.unit]}}</p>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>

@@ -1,0 +1,12 @@
+<md-card>
+  <md-card-header>Recipes</md-card-header>
+  <md-card-content>
+    <md-list>
+      <md-list-item *ngFor="let recipe of recipes" (click)="onItemClick(recipe.id)">
+        <h1 mdLine>{{recipe.name}}</h1>
+        <p mdLine [style.fontSize]="'0.75em'">{{recipe.ingredients.length}} ingredients</p>
+        <md-icon md-list-icon>shopping_basket</md-icon>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>
