@@ -6,7 +6,7 @@ import {UnitOfMeasure} from "../../models/unit-of-measure.enum";
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
-  styleUrls: ['./recipe-details.component.css']
+  styleUrls: ['./recipe-details.component.scss']
 })
 export class RecipeDetailsComponent implements OnInit {
 
