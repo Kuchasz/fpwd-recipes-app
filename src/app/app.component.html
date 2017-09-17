@@ -1,5 +1,5 @@
-<div style="display: flex">
-    <app-recipes-list (select)="selectedRecipeId = $event" [style.flex]="1" [style.margin]="'1em'"></app-recipes-list>
-    <app-recipe-details [recipeId]="selectedRecipeId" [style.flex]="3" [style.margin]="'1em'"></app-recipe-details>
+<div>
+    <app-recipes-list (select)="selectedRecipeId = $event" [style.margin]="'1em'"></app-recipes-list>
+    <app-recipe-details [recipeId]="selectedRecipeId" [style.margin]="'1em'"></app-recipe-details>
 </div>
 

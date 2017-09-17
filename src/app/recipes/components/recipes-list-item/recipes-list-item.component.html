@@ -1,0 +1,10 @@
+<div>
+    <span>
+        <header>{{recipe.name}}</header>
+    </span>
+    <md-chip-list>
+        <md-chip mdTooltip="Number of ingredients" [style.backgroundColor]="getRecipeBadgeColor(recipe)">
+            {{recipe.ingredients.length}}
+        </md-chip>
+    </md-chip-list>
+</div>

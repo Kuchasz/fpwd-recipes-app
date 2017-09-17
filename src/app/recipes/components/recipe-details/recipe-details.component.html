@@ -4,8 +4,10 @@
     <md-list>
       <md-list-item isRippleEnabled="true" *ngFor="let item of recipe.ingredients">
         <p mdLine>{{ingredients[item.ingredient]}}</p>
-        <md-divider></md-divider>
         <p mdLine>{{item.amount}} {{units[item.unit]}}</p>
+        <md-chip-list mdLine>
+          <md-chip *ngFor="let method of item.cookingMethods">{{methods[method]}}</md-chip>
+        </md-chip-list>
       </md-list-item>
     </md-list>
   </md-card-content>

@@ -6,37 +6,44 @@ import {isNumber} from 'util';
 import {UnitOfMeasure} from '../models/unit-of-measure.enum';
 import {CookingMethod} from '../models/cooking-method.enum';
 
-const getRandomNumber = (max: number) => Math.floor(Math.random() * max);
+const getRandomInteger = (max: number) => Math.floor(Math.random() * max);
 
-const getArrayRange = (range: number) => Array.from(Array(range)).map((_, index) => index);
+const getArrayFromRange = (range: number) => Array.from(Array(range)).map((_, index) => index);
+
+const gerRandomArrayItem = <T>(arr: T[]) => arr[getRandomInteger(arr.length)];
 
 type Enum = { [id: number]: string };
 
 const getRandomEnum: <T>(Enum) => T = <T>(enumType: Enum) => {
     const enumValues = Object.values(enumType).filter(i => isNumber(i));
-    return <T>enumValues[getRandomNumber(enumValues.length)];
+    return <T>enumValues[getRandomInteger(enumValues.length)];
 };
 
 const getRandomRecipeIngredient: () => RecipeIngredient = () => {
     return {
         ingredient: getRandomEnum<Ingredient>(Ingredient),
-        amount: getRandomNumber(500),
+        amount: getRandomInteger(500),
         unit: getRandomEnum<UnitOfMeasure>(UnitOfMeasure),
-        cookingMethods: [getRandomEnum<CookingMethod>(CookingMethod)]
+        cookingMethods: getArrayFromRange(getRandomInteger(3)+1).map(x => getRandomEnum<CookingMethod>(CookingMethod))
     };
 };
 
+const cuisineNames = ['Italian', 'Indonesian', 'Mexican', 'Chinese', 'Spanish', 'French', 'Japanese', 'Turkey', 'Thai', 'Indian'];
+const dishNames = ['Soup', 'Chicken', 'Pizza', 'Fried Rice', 'Cake', 'Salad', 'Fish'];
+
+const getRandomRecipeName = () => `${gerRandomArrayItem(cuisineNames)} ${gerRandomArrayItem(dishNames)}`;
+
 const getRandomRecipe: (number) => Recipe = (id: number) => {
-    const ingredients = getArrayRange(getRandomNumber(5) + 1).map(() => getRandomRecipeIngredient());
+    const ingredients = getArrayFromRange(getRandomInteger(15) + 1).map(() => getRandomRecipeIngredient());
     return {
         id,
-        name: `Recipe number ${id + 1}`,
+        name: getRandomRecipeName(),
         ingredients,
         bigAmount: ingredients.reduce((prev, cur) => prev + cur.amount, 0) > 1000
     };
 };
 
-const getRandomRecipes = () => getArrayRange(getRandomNumber(20) + 5).map(id => getRandomRecipe(id));
+const getRandomRecipes = () => getArrayFromRange(getRandomInteger(20) + 5).map(id => getRandomRecipe(id));
 
 @Injectable()
 export class RecipesService {

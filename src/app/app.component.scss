@@ -1,0 +1,9 @@
+div {
+  display: flex;
+  app-recipes-list {
+    flex: 1;
+  }
+  app-recipe-details {
+    flex: 3;
+  }
+}
