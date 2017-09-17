@@ -23,15 +23,15 @@ export class RecipesListComponent implements OnInit {
         this.recipes = this.recipesService.getAllRecipes();
     }
 
-    onItemClick(id: number) {
-        this.select.emit(id);
-        this.selectedRecipeId = id;
+    openCreateRecipeDialog(){
+        const dialogWindow = this.dialog.open(CreateRecipeDialogComponent, {hasBackdrop: true});
+        dialogWindow.afterClosed().subscribe( ({addedRecipeId}: {addedRecipeId: number}) => {
+            if(addedRecipeId) this.selectRecipe(addedRecipeId);
+        });
     }
 
-    openCreateRecipeDialog(){
-        const dialogWindow = this.dialog.open(CreateRecipeDialogComponent);
-        dialogWindow.afterClosed().subscribe( result => {
-            console.log(result);
-        });
+    selectRecipe(recipeId: number){
+        this.selectedRecipeId = recipeId;
+        this.select.emit(recipeId);
     }
 }

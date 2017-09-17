@@ -28,7 +28,7 @@ export class CreateRecipeDialogComponent {
             bigAmount: Boolean(recipe.bigAmount)
         };
         this.recipesService.save(recipeToSave);
-        this.dialogRef.close();
+        this.dialogRef.close({addedRecipeId: recipeToSave.id});
         this.snackBar.open(`Recipe ${recipeToSave.name} saved.`, 'OK', {duration: 5000});
     }
 

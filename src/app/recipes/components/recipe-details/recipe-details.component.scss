@@ -3,4 +3,14 @@ md-list-item{
     display: flex;
     align-items: center;
   }
+  md-select{
+    width: 0px;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+.methods-selector{
+  button{
+    margin: 8px;
+  }
 }

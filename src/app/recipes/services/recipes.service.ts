@@ -5,26 +5,16 @@ import {Ingredient} from '../models/ingredient.enum';
 import {isNumber} from 'util';
 import {UnitOfMeasure} from '../models/unit-of-measure.enum';
 import {CookingMethod} from '../models/cooking-method.enum';
-
-const getRandomInteger = (max: number) => Math.floor(Math.random() * max);
-
-const getArrayFromRange = (range: number) => Array.from(Array(range)).map((_, index) => index);
-
-const gerRandomArrayItem = <T>(arr: T[]) => arr[getRandomInteger(arr.length)];
-
-type Enum = { [id: number]: string };
-
-const getRandomEnum: <T>(Enum) => T = <T>(enumType: Enum) => {
-    const enumValues = Object.values(enumType).filter(i => isNumber(i));
-    return <T>enumValues[getRandomInteger(enumValues.length)];
-};
+import {getRandomEnum} from "../../../utils/enum";
+import {getRandomInteger} from "../../../utils/number";
+import {gerRandomArrayItem, getArrayFromRange, removeDuplicates} from "../../../utils/array";
 
 const getRandomRecipeIngredient: () => RecipeIngredient = () => {
     return {
         ingredient: getRandomEnum<Ingredient>(Ingredient),
         amount: getRandomInteger(500),
         unit: getRandomEnum<UnitOfMeasure>(UnitOfMeasure),
-        cookingMethods: getArrayFromRange(getRandomInteger(3)+1).map(x => getRandomEnum<CookingMethod>(CookingMethod))
+        cookingMethods: removeDuplicates(getArrayFromRange(getRandomInteger(3) + 1).map(x => getRandomEnum<CookingMethod>(CookingMethod)), method=>method)
     };
 };
 
@@ -34,7 +24,7 @@ const dishNames = ['Soup', 'Chicken', 'Pizza', 'Fried Rice', 'Cake', 'Salad', 'F
 const getRandomRecipeName = () => `${gerRandomArrayItem(cuisineNames)} ${gerRandomArrayItem(dishNames)}`;
 
 const getRandomRecipe: (number) => Recipe = (id: number) => {
-    const ingredients = getArrayFromRange(getRandomInteger(15) + 1).map(() => getRandomRecipeIngredient());
+    const ingredients = removeDuplicates(getArrayFromRange(getRandomInteger(15) + 1).map(() => getRandomRecipeIngredient()), ingredient => ingredient.ingredient);
     return {
         id,
         name: getRandomRecipeName(),
@@ -58,11 +48,15 @@ export class RecipesService {
         return this.recipes;
     }
 
-    checkIfIdentityIsAvailable(id: number){
+    getRecipe(recipeId: number){
+        return this.getAllRecipes().filter(r => r.id === recipeId)[0];
+    }
+
+    checkIfIdentityIsAvailable(id: number) {
         return this.recipes.filter(r => r.id === id).length === 0;
     }
 
-    save(recipe: Recipe){
+    save(recipe: Recipe) {
         this.recipes.push(recipe);
     }
 

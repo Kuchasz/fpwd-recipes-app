@@ -6,13 +6,14 @@
         <p mdLine>{{ingredients[item.ingredient]}}</p>
         <p mdLine>{{item.amount}} {{units[item.unit]}}</p>
         <div class="methods-selector" mdLine>
-          <md-select>
+          <md-select (change)="addCookingMethod($event.value, item.ingredient)" #select placeholder="Select Cooking Method">
             <md-option *ngFor="let method of getAvailableMethods(item.ingredient)" [value]="method">
               {{methods[method]}}
             </md-option>
           </md-select>
-          <md-chip-list>
-            <md-chip *ngFor="let method of item.cookingMethods">
+          <button (click)="select.open()" [disabled]="getAvailableMethods(item.ingredient).length === 0" md-mini-fab> <md-icon class="md-12">add</md-icon></button>
+          <md-chip-list [tabIndex]="-1">
+            <md-chip mdTooltip="Click to remove" *ngFor="let method of item.cookingMethods" (click)="removeCookingMethod(method, item.ingredient)">
               {{methods[method]}}
             </md-chip>
           </md-chip-list>

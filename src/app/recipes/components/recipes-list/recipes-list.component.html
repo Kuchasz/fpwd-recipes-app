@@ -2,6 +2,6 @@
     <md-card-header>Recipes</md-card-header>
     <md-card-content>
         <button md-raised-button (click)="openCreateRecipeDialog()">Create Recipe</button>
-        <app-recipes-list-item *ngFor="let recipe of recipes" [selected]="recipe.id === selectedRecipeId" [recipe]="recipe" (click)="onItemClick(recipe.id)"></app-recipes-list-item>
+        <app-recipes-list-item *ngFor="let recipe of recipes" [selected]="recipe.id === selectedRecipeId" [recipe]="recipe" (click)="selectRecipe(recipe.id)"></app-recipes-list-item>
     </md-card-content>
 </md-card>

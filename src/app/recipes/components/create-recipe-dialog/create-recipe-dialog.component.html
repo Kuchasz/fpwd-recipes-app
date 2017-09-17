@@ -21,6 +21,6 @@
     </div>
 </form>
 <div md-dialog-actions>
-    <button md-button md-dialog-close>Cancel</button>
+    <button md-button [md-dialog-close]="{addedRecipeId: null}">Cancel</button>
     <button md-button type="submit" tabindex="4" form="new-recipe-form" [disabled]="newRecipe.invalid">OK</button>
 </div>
