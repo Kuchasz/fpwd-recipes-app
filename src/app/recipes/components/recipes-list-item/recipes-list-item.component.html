@@ -4,7 +4,7 @@
         <header>{{recipe.name}}</header>
     </span>
     <md-chip-list [tabIndex]="-1">
-        <md-chip mdTooltip="Number of ingredients" [style.backgroundColor]="getRecipeBadgeColor(recipe)">
+        <md-chip mdTooltip="Number of ingredients" mdTooltipShowDelay="500" [style.backgroundColor]="getRecipeBadgeColor(recipe)">
             {{recipe.ingredients.length}}
         </md-chip>
     </md-chip-list>

@@ -20,7 +20,7 @@ export class RecipesListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.recipes = this.recipesService.getAllRecipes();
+        this.recipesService.getAllRecipes().subscribe( recipes => this.recipes = recipes);
     }
 
     openCreateRecipeDialog(){
@@ -33,5 +33,10 @@ export class RecipesListComponent implements OnInit {
     selectRecipe(recipeId: number){
         this.selectedRecipeId = recipeId;
         this.select.emit(recipeId);
+    }
+
+    deleteRecipe(recipeId: number){
+        this.selectRecipe(undefined);
+        this.recipesService.delete(recipeId);
     }
 }

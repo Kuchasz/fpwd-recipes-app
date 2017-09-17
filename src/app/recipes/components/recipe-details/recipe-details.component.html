@@ -1,8 +1,7 @@
 <md-card *ngIf="recipe">
   <md-card-header>{{recipe.name}}</md-card-header>
   <md-card-content>
-    <md-list>
-      <md-list-item *ngFor="let item of recipe.ingredients">
+      <div *ngFor="let item of recipe.ingredients">
         <p mdLine>{{ingredients[item.ingredient]}}</p>
         <p mdLine>{{item.amount}} {{units[item.unit]}}</p>
         <div class="methods-selector" mdLine>
@@ -11,14 +10,13 @@
               {{methods[method]}}
             </md-option>
           </md-select>
-          <button (click)="select.open()" [disabled]="getAvailableMethods(item.ingredient).length === 0" md-mini-fab> <md-icon class="md-12">add</md-icon></button>
+          <button mdTooltip="Click to add Cooking Method" mdTooltipShowDelay="500" (click)="select.open()" [disabled]="getAvailableMethods(item.ingredient).length === 0" md-mini-fab> <md-icon class="md-12">add</md-icon></button>
           <md-chip-list [tabIndex]="-1">
-            <md-chip mdTooltip="Click to remove" *ngFor="let method of item.cookingMethods" (click)="removeCookingMethod(method, item.ingredient)">
+            <md-chip mdTooltip="Click to delete Cooking Method" mdTooltipShowDelay="500" *ngFor="let method of item.cookingMethods" (click)="removeCookingMethod(method, item.ingredient)">
               {{methods[method]}}
             </md-chip>
           </md-chip-list>
         </div>
-      </md-list-item>
-    </md-list>
+      </div>
   </md-card-content>
 </md-card>

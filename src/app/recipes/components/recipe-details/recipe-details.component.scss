@@ -1,4 +1,4 @@
-md-list-item{
+div{
   .methods-selector{
     display: flex;
     align-items: center;
@@ -7,6 +7,11 @@ md-list-item{
     width: 0px;
     visibility: hidden;
     pointer-events: none;
+  }
+  md-chip-list{
+    md-chip{
+      cursor: pointer;
+    }
   }
 }
 .methods-selector{
