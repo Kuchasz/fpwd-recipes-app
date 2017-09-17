@@ -58,4 +58,12 @@ export class RecipesService {
         return this.recipes;
     }
 
+    checkIfIdentityIsAvailable(id: number){
+        return this.recipes.filter(r => r.id === id).length === 0;
+    }
+
+    save(recipe: Recipe){
+        this.recipes.push(recipe);
+    }
+
 }

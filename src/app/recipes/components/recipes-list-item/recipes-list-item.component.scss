@@ -5,12 +5,20 @@ div {
   align-items: center;
   span {
     flex: 1;
-    header{
+    header {
       font-size: 1.25em;
+    }
+    &.selected{
+      font-weight: bolder;
     }
   }
 
-  &:hover{
+  &:hover {
     background: #eee;
+  }
+
+  .recipe-id {
+    margin: 0px;
+    opacity: 0.5;
   }
 }

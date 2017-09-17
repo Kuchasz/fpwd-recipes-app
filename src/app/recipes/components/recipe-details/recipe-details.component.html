@@ -2,12 +2,21 @@
   <md-card-header>{{recipe.name}}</md-card-header>
   <md-card-content>
     <md-list>
-      <md-list-item isRippleEnabled="true" *ngFor="let item of recipe.ingredients">
+      <md-list-item *ngFor="let item of recipe.ingredients">
         <p mdLine>{{ingredients[item.ingredient]}}</p>
         <p mdLine>{{item.amount}} {{units[item.unit]}}</p>
-        <md-chip-list mdLine>
-          <md-chip *ngFor="let method of item.cookingMethods">{{methods[method]}}</md-chip>
-        </md-chip-list>
+        <div class="methods-selector" mdLine>
+          <md-select>
+            <md-option *ngFor="let method of getAvailableMethods(item.ingredient)" [value]="method">
+              {{methods[method]}}
+            </md-option>
+          </md-select>
+          <md-chip-list>
+            <md-chip *ngFor="let method of item.cookingMethods">
+              {{methods[method]}}
+            </md-chip>
+          </md-chip-list>
+        </div>
       </md-list-item>
     </md-list>
   </md-card-content>

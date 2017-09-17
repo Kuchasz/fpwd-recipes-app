@@ -1,5 +1,6 @@
 <div>
-    <span>
+    <span [class]="selected ? 'selected' : undefined">
+        <p class="recipe-id">#{{recipe.id}}</p>
         <header>{{recipe.name}}</header>
     </span>
     <md-chip-list>

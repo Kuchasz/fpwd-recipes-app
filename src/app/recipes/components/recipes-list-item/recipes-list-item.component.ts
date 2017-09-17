@@ -8,7 +8,10 @@ import {Recipe} from "../../models/recipe";
 })
 export class RecipesListItemComponent {
     @Input()
-    recipe: Recipe = undefined;
+    recipe: Recipe;
+
+    @Input()
+    selected: Boolean = undefined;
 
     getRecipeBadgeColor(recipe: Recipe) {
         const {ingredients: {length}} = recipe;

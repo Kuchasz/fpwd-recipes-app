@@ -1,6 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {RecipesService} from "../../services/recipes.service";
 import {Recipe} from "../../models/recipe";
+import {MdDialog} from "@angular/material";
+import {CreateRecipeDialogComponent} from "../create-recipe-dialog/create-recipe-dialog.component";
 
 @Component({
     selector: 'app-recipes-list',
@@ -12,8 +14,9 @@ export class RecipesListComponent implements OnInit {
     @Output()
     select = new EventEmitter<number>();
     recipes: Recipe[];
+    selectedRecipeId: number;
 
-    constructor(readonly recipesService: RecipesService) {
+    constructor(readonly recipesService: RecipesService, readonly dialog: MdDialog) {
     }
 
     ngOnInit() {
@@ -22,9 +25,13 @@ export class RecipesListComponent implements OnInit {
 
     onItemClick(id: number) {
         this.select.emit(id);
+        this.selectedRecipeId = id;
     }
 
-
-
-
+    openCreateRecipeDialog(){
+        const dialogWindow = this.dialog.open(CreateRecipeDialogComponent);
+        dialogWindow.afterClosed().subscribe( result => {
+            console.log(result);
+        });
+    }
 }

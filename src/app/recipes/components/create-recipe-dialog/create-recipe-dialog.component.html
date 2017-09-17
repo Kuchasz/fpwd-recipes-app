@@ -1,0 +1,26 @@
+<h1 md-dialog-title>Create new Recipe</h1>
+<form md-dialog-content novalidate id="new-recipe-form" (submit)="saveNewRecipe(newRecipe)" [formGroup]="newRecipe">
+    <div class="full-width">
+        <md-form-field>
+            <input mdInput placeholder="Recipe id" tabindex="1" formControlName="id">
+            <md-hint *ngIf="!newRecipe.get('id').touched" align="start">Required</md-hint>
+            <md-hint *ngIf="!newRecipe.get('id').touched" align="end">Must be unique</md-hint>
+            <md-error *ngIf="newRecipe.get('id').touched && newRecipe.get('id').hasError('required')">Id is required</md-error>
+            <md-error *ngIf="newRecipe.get('id').touched && newRecipe.get('id').hasError('notUnique')">Id must be unique</md-error>
+        </md-form-field>
+    </div>
+    <div class="full-width">
+        <md-form-field>
+            <input mdInput placeholder="Recipe name" tabindex="2" formControlName="name">
+            <md-hint *ngIf="!newRecipe.get('name').touched" align="start">Required</md-hint>
+            <md-error *ngIf="newRecipe.get('name').touched && newRecipe.get('name').hasError('required')">Name is required</md-error>
+        </md-form-field>
+    </div>
+    <div class="full-width">
+        <md-checkbox name="bigAmount" [tabIndex]="3" formControlName="bigAmount">Big Amount?</md-checkbox>
+    </div>
+</form>
+<div md-dialog-actions>
+    <button md-button md-dialog-close>Cancel</button>
+    <button md-button type="submit" tabindex="4" form="new-recipe-form" [disabled]="newRecipe.invalid">OK</button>
+</div>
