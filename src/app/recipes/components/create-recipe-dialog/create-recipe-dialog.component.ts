@@ -32,7 +32,7 @@ export class CreateRecipeDialogComponent {
         this.snackBar.open(`Recipe ${recipeToSave.name} saved.`, 'OK', {duration: 5000});
     }
 
-    _validateIdentityUniqueness() {
+    private _validateIdentityUniqueness() {
         return (control: AbstractControl): ValidationErrors => {
             const isIdUnique = this.recipesService.checkIfIdentityIsAvailable(Number(control.value));
             return isIdUnique ? null : {'notUnique': true};
