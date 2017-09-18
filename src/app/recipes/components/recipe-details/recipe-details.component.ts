@@ -1,10 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {RecipesService} from "../../services/recipes.service";
 import {Ingredient} from "../../models/ingredient.enum";
 import {UnitOfMeasure} from "../../models/unit-of-measure.enum";
 import {CookingMethod} from "../../models/cooking-method.enum";
 import {Recipe} from "../../models/recipe";
 import {getAllValues} from "../../../../utils/enum";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {RecipeIngredient} from "../../models/recipe-ingredient";
 
 @Component({
     selector: 'app-recipe-details',
@@ -19,8 +21,16 @@ export class RecipeDetailsComponent {
     units = UnitOfMeasure;
     methods = CookingMethod;
     allMethods = getAllValues<CookingMethod>(CookingMethod);
+    allIngredients = getAllValues<Ingredient>(Ingredient);
+    allUnits = getAllValues<UnitOfMeasure>(UnitOfMeasure);
 
-    constructor(readonly recipeService: RecipesService) {
+    newIngredient: FormGroup = this.formBuilder.group({
+        ingredient: ['', Validators.required],
+        unit: ['', Validators.required],
+        amount: ['', [Validators.required, this._validateAmount()]]
+    });
+
+    constructor(readonly recipeService: RecipesService, readonly formBuilder: FormBuilder) {
     }
 
     get recipe(): Recipe {
@@ -30,6 +40,11 @@ export class RecipeDetailsComponent {
     getAvailableMethods(ingredient: Ingredient): CookingMethod[]{
         const assignedMethods = this._getTargetRecipeIngredient(ingredient).cookingMethods;
         return this.allMethods.filter(m => assignedMethods.indexOf(m) === -1);
+    }
+
+    getAvailableIngredients(recipe: Recipe): Ingredient[]{
+        const assignedIngredients = recipe.ingredients.map(i => i.ingredient);
+        return this.allIngredients.filter(i => assignedIngredients.indexOf(i) === -1);
     }
 
     addCookingMethod(method: CookingMethod, ingredient: Ingredient){
@@ -43,8 +58,26 @@ export class RecipeDetailsComponent {
         targetRecipeIngredient.cookingMethods = [...targetRecipeIngredient.cookingMethods.slice(0, methodToRemoveIndex), ...targetRecipeIngredient.cookingMethods.slice(methodToRemoveIndex+1)];
     }
 
+    addIngredient({value: ingredient}){
+        const ingredientToSave: RecipeIngredient = {
+            ingredient: ingredient.ingredient,
+            cookingMethods: [],
+            unit: ingredient.unit,
+            amount: ingredient.amount
+        };
+        this.recipe.ingredients = [ingredientToSave, ...this.recipe.ingredients];
+        this.newIngredient.reset();
+    }
+
     private _getTargetRecipeIngredient(ingredient: Ingredient){
         return this.recipe.ingredients.filter(i => i.ingredient === ingredient)[0];
     }
+
+    private _validateAmount(){
+        return (control: AbstractControl): ValidationErrors => {
+            return (!this.recipe || this.recipe.bigAmount) ? null : this.recipe.ingredients.reduce((sum, ingredient)=>sum+ingredient.amount, 0) + control.value >= 1000 ? {'tooMuchIngredients': true} : null;
+        }
+    }
+
 
 }

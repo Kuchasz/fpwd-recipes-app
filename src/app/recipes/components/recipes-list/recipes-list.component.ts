@@ -26,7 +26,7 @@ export class RecipesListComponent implements OnInit {
     openCreateRecipeDialog(){
         const dialogWindow = this.dialog.open(CreateRecipeDialogComponent, {hasBackdrop: true});
         dialogWindow.afterClosed().subscribe( ({addedRecipeId}: {addedRecipeId: number}) => {
-            if(addedRecipeId) this.selectRecipe(addedRecipeId);
+            if(addedRecipeId !== undefined) this.selectRecipe(addedRecipeId);
         });
     }
 

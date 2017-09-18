@@ -43,14 +43,16 @@ export class RecipesService {
 
     private recipes: Recipe[];
     private readonly recipesSubject: Subject<Recipe[]>;
+    private readonly recipesObservable: Observable<Recipe[]>;
 
     constructor() {
         this.recipesSubject = new Subject<Recipe[]>();
         this.recipes = getRandomRecipes();
+        this.recipesObservable = Rx.Observable.from([this.recipes]).merge(this.recipesSubject.asObservable());
     }
 
     getAllRecipes(): Observable<Recipe[]> {
-        return Rx.Observable.from([this.recipes]).merge(this.recipesSubject.asObservable());
+        return this.recipesObservable;
     }
 
     getRecipe(recipeId: number){
@@ -62,7 +64,7 @@ export class RecipesService {
     }
 
     save(recipe: Recipe) {
-        this.recipes = [...this.recipes, recipe];
+        this.recipes = [recipe, ...this.recipes];
         this.recipesSubject.next(this.recipes);
     }
 

@@ -15,6 +15,7 @@ import {RecipeDetailsComponent} from './recipes/components/recipe-details/recipe
 import {RecipesListItemComponent} from "./recipes/components/recipes-list-item/recipes-list-item.component";
 import {CreateRecipeDialogComponent} from "./recipes/components/create-recipe-dialog/create-recipe-dialog.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ControlsModule} from '../controls/controls.module';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
         MdTooltipModule,
         MdSelectModule,
         MdDialogModule,
-        MdCheckboxModule
+        MdCheckboxModule,
+        ControlsModule
     ],
     providers: [RecipesService],
     bootstrap: [AppComponent]

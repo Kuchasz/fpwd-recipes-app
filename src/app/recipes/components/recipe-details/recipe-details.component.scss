@@ -1,21 +1,65 @@
-div{
-  .methods-selector{
-    display: flex;
-    align-items: center;
+.recipe-details-component {
+  > *:not(:first-child){
+    margin: 32px 0px;
   }
-  md-select{
-    width: 0px;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  md-chip-list{
-    md-chip{
-      cursor: pointer;
+
+  header {
+      font-size: 1.25em;
+    p{
+      font-size: 0.75em;
+      text-transform: uppercase;
+    }
+    .section {
+      font-size: 1em;
+      text-transform: uppercase;
+      opacity: 0.5;
     }
   }
-}
-.methods-selector{
-  button{
-    margin: 8px;
+
+  .ingredient-form{
+    margin-top: 8px;
+    display: flex;
+    align-items: flex-start;
+    > *:not(:first-child) {
+      margin-left: 8px;
+    }
+    button{
+      align-self: center;
+      margin-bottom: 10px;
+    }
+  }
+
+  .ingredients-list {
+    > div {
+      margin: 32px 0px;
+    }
+    div {
+      .methods-selector {
+        display: flex;
+        align-items: center;
+      }
+      md-select {
+        width: 0px;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      md-chip-list {
+        md-chip {
+          cursor: pointer;
+        }
+      }
+    }
+    .methods-selector {
+      button {
+        margin: 8px 8px 8px 0px;
+      }
+    }
+    .ingredient-name{
+
+    }
+    .ingredient-amount{
+      font-size: 0.75em;
+      opacity: 0.5;
+    }
   }
 }
