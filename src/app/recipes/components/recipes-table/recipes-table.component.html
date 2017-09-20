@@ -16,7 +16,7 @@
         <ng-container mdColumnDef="navigate">
             <md-header-cell *mdHeaderCellDef>Navigate</md-header-cell>
             <md-cell *mdCellDef="let recipe">
-                <button (click)="navigateToRecipe(recipe.id)" md-icon-button>
+                <button mdTooltip="Click to see details" mdTooltipShowDelay="500" (click)="navigateToRecipe(recipe.id)" md-icon-button>
                     <md-icon class="md-12">call_made</md-icon>
                 </button>
             </md-cell>

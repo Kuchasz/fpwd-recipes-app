@@ -21,9 +21,9 @@ export class RecipesTableComponent {
     @Output()
     navigateBack = new EventEmitter<void>();
 
-    idFilter: string;
-    nameFilter: string;
-    ingredientsFilter: string;
+    idFilter: string ="";
+    nameFilter: string ="";
+    ingredientsFilter: string = "";
 
     constructor(readonly recipesService: RecipesService, readonly router: Router) {
         this.recipes = new Recipes(recipesService);
@@ -68,7 +68,6 @@ export class Recipes extends DataSource<Recipe> {
         return Observable.merge(...subjects).map(() => {
             return this.recipesService.getFilteredRecipes(this.filterChange.getValue());
         });
-
     }
 
     disconnect() {

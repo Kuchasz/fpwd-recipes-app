@@ -18,7 +18,7 @@ const getRandomRecipeIngredient: () => RecipeIngredient = () => {
         ingredient: getRandomEnum<Ingredient>(Ingredient),
         amount: getRandomInteger(500),
         unit: getRandomEnum<UnitOfMeasure>(UnitOfMeasure),
-        cookingMethods: removeDuplicates(getArrayFromRange(getRandomInteger(3) + 1).map(x => getRandomEnum<CookingMethod>(CookingMethod)), method=>method)
+        cookingMethods: removeDuplicates(getArrayFromRange(getRandomInteger(3) + 1).map(x => getRandomEnum<CookingMethod>(CookingMethod)), method => method)
     };
 };
 
@@ -39,7 +39,7 @@ const getRandomRecipe = (id: number) => {
 
 const getRandomRecipes = () => getArrayFromRange(getRandomInteger(20) + 5).map(id => getRandomRecipe(id));
 
-export interface RecipesFilter{
+export interface RecipesFilter {
     id?: string;
     name?: string;
     ingredients?: string;
@@ -53,8 +53,8 @@ export class RecipesService {
     private readonly recipesObservable: Observable<Recipe[]>;
 
     constructor() {
-        this.recipesSubject = new BehaviorSubject<Recipe[]>(getRandomRecipes());
         this.recipes = getRandomRecipes();
+        this.recipesSubject = new BehaviorSubject<Recipe[]>(this.recipes);
         this.recipesObservable = Rx.Observable.from([this.recipes]).merge(this.recipesSubject.asObservable());
     }
 
@@ -62,18 +62,26 @@ export class RecipesService {
         return this.recipesObservable;
     }
 
-    getFilteredRecipes(filter: RecipesFilter): Recipe[]{
+    getFilteredRecipes(filter: RecipesFilter): Recipe[] {
         return this.recipes
-            .filter(r => r.id.toString().includes(filter.id))
-            .filter(r => r.name.includes(filter.name))
-            .filter(r => r.ingredients.map(i => Ingredient[i.ingredient]).reduce((l,r)=>`${l} ${r}`,"").includes(filter.name))
+            .filter(r => r.id
+                .toString()
+                .includes(filter.id))
+            .filter(r => r.name
+                .toLowerCase()
+                .includes(filter.name.toLowerCase()))
+            .filter(r => r.ingredients
+                .map(i => Ingredient[i.ingredient])
+                .reduce((l, r) => `${l} ${r}`, "")
+                .toLowerCase()
+                .includes(filter.ingredients.toLowerCase()))
     }
 
-    getRecipesSubject(){
+    getRecipesSubject() {
         return this.recipesSubject;
     }
 
-    getRecipe(recipeId: number){
+    getRecipe(recipeId: number) {
         return this.recipes.filter(r => r.id === recipeId)[0];
     }
 
@@ -86,10 +94,10 @@ export class RecipesService {
         this.recipesSubject.next(this.recipes);
     }
 
-    delete(recipeId: number){
+    delete(recipeId: number) {
         const recipeToDelete = this.recipes.filter(r => r.id === recipeId)[0];
         const recipeToDeleteIndex = this.recipes.indexOf(recipeToDelete);
-        this.recipes = [...this.recipes.slice(0, recipeToDeleteIndex), ...this.recipes.slice(recipeToDeleteIndex+1)];
+        this.recipes = [...this.recipes.slice(0, recipeToDeleteIndex), ...this.recipes.slice(recipeToDeleteIndex + 1)];
         this.recipesSubject.next(this.recipes);
     }
 
