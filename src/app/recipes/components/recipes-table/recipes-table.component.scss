@@ -1,0 +1,12 @@
+:host {
+  > div {
+    margin: 1em;
+    .table-filter{
+      padding: 1em;
+      background: white;
+    }
+  }
+  .mat-table {
+    overflow: auto;
+  }
+}

@@ -3,6 +3,7 @@ import {RecipesService} from "../../services/recipes.service";
 import {Recipe} from "../../models/recipe";
 import {MdDialog} from "@angular/material";
 import {CreateRecipeDialogComponent} from "../create-recipe-dialog/create-recipe-dialog.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'app-recipes-list',
@@ -11,17 +12,20 @@ import {CreateRecipeDialogComponent} from "../create-recipe-dialog/create-recipe
 })
 export class RecipesListComponent implements OnInit {
 
-    @Output()
-    select = new EventEmitter<number>();
     recipes: Recipe[];
     selectedRecipeId: number;
     filter: string = "";
 
-    constructor(readonly recipesService: RecipesService, readonly dialog: MdDialog) {
+    constructor(
+        readonly recipesService: RecipesService,
+        readonly dialog: MdDialog,
+        readonly router: Router,
+        readonly route: ActivatedRoute) {
     }
 
     ngOnInit() {
         this.recipesService.getAllRecipes().subscribe(recipes => this.recipes = recipes);
+        this.route.params.map(p => p.id).subscribe(id => this.selectedRecipeId = Number(id));
     }
 
     openCreateRecipeDialog() {
@@ -39,8 +43,7 @@ export class RecipesListComponent implements OnInit {
     }
 
     selectRecipe(recipeId: number) {
-        this.selectedRecipeId = recipeId;
-        this.select.emit(recipeId);
+        this.router.navigate(['recipe', {id: recipeId}]);
     }
 
     deleteRecipe(recipeId: number) {

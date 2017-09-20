@@ -9,7 +9,7 @@ import {
     MdButtonModule, MdCardModule, MdCheckboxModule, MdChipsModule, MdDialog, MdDialogModule, MdGridListModule,
     MdIconModule,
     MdInputModule,
-    MdListModule, MdSelectModule, MdSnackBarModule, MdTooltipModule
+    MdListModule, MdSelectModule, MdSnackBarModule, MdTableModule, MdTabsModule, MdTooltipModule
 } from "@angular/material";
 import {RecipeDetailsComponent} from './recipes/components/recipe-details/recipe-details.component';
 import {RecipesListItemComponent} from "./recipes/components/recipes-list-item/recipes-list-item.component";
@@ -17,6 +17,15 @@ import {CreateRecipeDialogComponent} from "./recipes/components/create-recipe-di
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ControlsModule} from '../controls/controls.module';
 import {RecipesListFilterComponent} from "./recipes/components/recipes-list-filter/recipes-list-filter.component";
+import {RouterModule, Routes} from "@angular/router";
+import {RecipesViewerComponent} from "./recipes/components/recipes-viewer/recipes-viewer.component";
+import {MenuComponent} from "./navigation/components/menu/menu.component";
+import {RecipesTableComponent} from './recipes/components/recipes-table/recipes-table.component';
+
+const routes: Routes = [
+    {path: 'recipe/:id', component: RecipesViewerComponent},
+    {path: '**', component: RecipesViewerComponent}
+];
 
 @NgModule({
     declarations: [
@@ -25,9 +34,12 @@ import {RecipesListFilterComponent} from "./recipes/components/recipes-list-filt
         RecipesListItemComponent,
         RecipeDetailsComponent,
         CreateRecipeDialogComponent,
-        RecipesListFilterComponent
+        RecipesListFilterComponent,
+        RecipesViewerComponent,
+        MenuComponent,
+        RecipesTableComponent
     ],
-    entryComponents:[
+    entryComponents: [
         CreateRecipeDialogComponent
     ],
     imports: [
@@ -47,7 +59,10 @@ import {RecipesListFilterComponent} from "./recipes/components/recipes-list-filt
         MdSelectModule,
         MdDialogModule,
         MdCheckboxModule,
-        ControlsModule
+        ControlsModule,
+        MdTableModule,
+        MdTabsModule,
+        RouterModule.forRoot(routes)
     ],
     providers: [RecipesService],
     bootstrap: [AppComponent]

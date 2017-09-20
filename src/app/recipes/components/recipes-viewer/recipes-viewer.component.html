@@ -1,0 +1,11 @@
+<md-tab-group [(selectedIndex)]="selectedTabIndex">
+    <md-tab label="Recipes">
+        <div>
+            <app-recipes-list [style.margin]="'1em'"></app-recipes-list>
+            <app-recipe-details [style.margin]="'1em'"></app-recipe-details>
+        </div>
+    </md-tab>
+    <md-tab label="Advanced search">
+        <app-recipes-table (navigateBack)="selectedTabIndex = 0;" ></app-recipes-table>
+    </md-tab>
+</md-tab-group>

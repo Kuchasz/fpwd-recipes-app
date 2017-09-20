@@ -1,0 +1,49 @@
+<div class="example-container mat-elevation-z8">
+    <div class="table-filter">
+        <md-form-field>
+            <input mdInput [(ngModel)]="idFilter" placeholder="Filter by id">
+        </md-form-field>
+        <md-form-field>
+            <input mdInput [(ngModel)]="nameFilter" placeholder="Filter by name">
+        </md-form-field>
+        <md-form-field>
+            <input mdInput [(ngModel)]="ingredientsFilter" placeholder="Filter by ingredients">
+        </md-form-field>
+        <button md-button (click)="setFilters()">Apply</button>
+    </div>
+    <md-table #table [dataSource]="recipes">
+
+        <ng-container mdColumnDef="navigate">
+            <md-header-cell *mdHeaderCellDef>Navigate</md-header-cell>
+            <md-cell *mdCellDef="let recipe">
+                <button (click)="navigateToRecipe(recipe.id)" md-icon-button>
+                    <md-icon class="md-12">call_made</md-icon>
+                </button>
+            </md-cell>
+        </ng-container>
+
+        <ng-container mdColumnDef="id">
+            <md-header-cell *mdHeaderCellDef>Id</md-header-cell>
+            <md-cell *mdCellDef="let recipe">{{recipe.id}}</md-cell>
+        </ng-container>
+
+        <ng-container mdColumnDef="name">
+            <md-header-cell *mdHeaderCellDef>Name</md-header-cell>
+            <md-cell *mdCellDef="let recipe">{{recipe.name}}</md-cell>
+        </ng-container>
+
+        <ng-container mdColumnDef="bigAmount">
+            <md-header-cell *mdHeaderCellDef>Big Amount</md-header-cell>
+            <md-cell *mdCellDef="let recipe">{{recipe.bigAmount}}</md-cell>
+        </ng-container>
+
+        <ng-container mdColumnDef="ingredients">
+            <md-header-cell *mdHeaderCellDef>Ingredients</md-header-cell>
+            <md-cell *mdCellDef="let recipe">{{getIngredients(recipe)}}</md-cell>
+        </ng-container>
+
+        <md-header-row *mdHeaderRowDef="columns"></md-header-row>
+        <md-header-row></md-header-row>
+        <md-row *mdRowDef="let row; columns: columns;"></md-row>
+    </md-table>
+</div>

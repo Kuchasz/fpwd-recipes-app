@@ -1,7 +1,12 @@
 <div class="recipe-details-component" *ngIf="recipe !== undefined">
     <md-card>
         <header>
-            <span>#{{recipe.id}} {{recipe.name}}</span>
+            <span>#{{recipe.id}}</span>
+            <md-form-field>
+                <input mdInput placeholder="Recipe name"
+                       [value]="recipe.name"
+                       (keyup)="changeRecipeName(recipe, $event.target.value)">
+            </md-form-field>
             <p *ngIf="recipe.bigAmount">Sum of amounts for that recipe can be over 1000</p>
         </header>
     </md-card>

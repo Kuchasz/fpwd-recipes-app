@@ -7,6 +7,8 @@ import {Recipe} from "../../models/recipe";
 import {getAllValues} from "../../../../utils/enum";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {RecipeIngredient} from "../../models/recipe-ingredient";
+import {ActivatedRoute, ParamMap, Params} from "@angular/router";
+import {isUndefined} from "util";
 
 @Component({
     selector: 'app-recipe-details',
@@ -15,8 +17,7 @@ import {RecipeIngredient} from "../../models/recipe-ingredient";
 })
 export class RecipeDetailsComponent {
 
-    @Input()
-    recipeId: number;
+    recipe: Recipe = undefined;
     ingredients = Ingredient;
     units = UnitOfMeasure;
     methods = CookingMethod;
@@ -30,35 +31,41 @@ export class RecipeDetailsComponent {
         amount: ['', [Validators.required, this._validateAmount()]]
     });
 
-    constructor(readonly recipeService: RecipesService, readonly formBuilder: FormBuilder) {
+    constructor(readonly recipeService: RecipesService,
+                readonly formBuilder: FormBuilder,
+                readonly route: ActivatedRoute) {
+
+        this.route.params.map(p => p.id).subscribe(id => {
+            this.recipe = this.recipeService.getRecipe(Number(id));
+        });
     }
 
-    get recipe(): Recipe {
-        return this.recipeService.getRecipe(this.recipeId);
+    changeRecipeName(recipe: Recipe, newName: string) {
+        recipe.name = newName;
     }
 
-    getAvailableMethods(ingredient: Ingredient): CookingMethod[]{
+    getAvailableMethods(ingredient: Ingredient): CookingMethod[] {
         const assignedMethods = this._getTargetRecipeIngredient(ingredient).cookingMethods;
         return this.allMethods.filter(m => assignedMethods.indexOf(m) === -1);
     }
 
-    getAvailableIngredients(recipe: Recipe): Ingredient[]{
+    getAvailableIngredients(recipe: Recipe): Ingredient[] {
         const assignedIngredients = recipe.ingredients.map(i => i.ingredient);
         return this.allIngredients.filter(i => assignedIngredients.indexOf(i) === -1);
     }
 
-    addCookingMethod(method: CookingMethod, ingredient: Ingredient){
+    addCookingMethod(method: CookingMethod, ingredient: Ingredient) {
         const targetRecipeIngredient = this._getTargetRecipeIngredient(ingredient);
         targetRecipeIngredient.cookingMethods = [method, ...targetRecipeIngredient.cookingMethods];
     }
 
-    removeCookingMethod(method: CookingMethod, ingredient: Ingredient){
+    removeCookingMethod(method: CookingMethod, ingredient: Ingredient) {
         const targetRecipeIngredient = this._getTargetRecipeIngredient(ingredient);
         const methodToRemoveIndex = targetRecipeIngredient.cookingMethods.indexOf(method);
-        targetRecipeIngredient.cookingMethods = [...targetRecipeIngredient.cookingMethods.slice(0, methodToRemoveIndex), ...targetRecipeIngredient.cookingMethods.slice(methodToRemoveIndex+1)];
+        targetRecipeIngredient.cookingMethods = [...targetRecipeIngredient.cookingMethods.slice(0, methodToRemoveIndex), ...targetRecipeIngredient.cookingMethods.slice(methodToRemoveIndex + 1)];
     }
 
-    addIngredient({value: ingredient}){
+    addIngredient({value: ingredient}) {
         const ingredientToSave: RecipeIngredient = {
             ingredient: ingredient.ingredient,
             cookingMethods: [],
@@ -69,13 +76,13 @@ export class RecipeDetailsComponent {
         this.newIngredient.reset();
     }
 
-    private _getTargetRecipeIngredient(ingredient: Ingredient){
+    private _getTargetRecipeIngredient(ingredient: Ingredient) {
         return this.recipe.ingredients.filter(i => i.ingredient === ingredient)[0];
     }
 
-    private _validateAmount(){
+    private _validateAmount() {
         return (control: AbstractControl): ValidationErrors => {
-            return (!this.recipe || this.recipe.bigAmount) ? null : this.recipe.ingredients.reduce((sum, ingredient)=>sum+ingredient.amount, 0) + control.value >= 1000 ? {'tooMuchIngredients': true} : null;
+            return (!this.recipe || this.recipe.bigAmount) ? null : this.recipe.ingredients.reduce((sum, ingredient) => sum + ingredient.amount, 0) + control.value >= 1000 ? {'tooMuchIngredients': true} : null;
         }
     }
 

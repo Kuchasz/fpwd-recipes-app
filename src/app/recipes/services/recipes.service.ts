@@ -11,6 +11,7 @@ import {gerRandomArrayItem, getArrayFromRange, removeDuplicates} from "../../../
 import * as Rx from "rxjs";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 const getRandomRecipeIngredient: () => RecipeIngredient = () => {
     return {
@@ -38,21 +39,38 @@ const getRandomRecipe = (id: number) => {
 
 const getRandomRecipes = () => getArrayFromRange(getRandomInteger(20) + 5).map(id => getRandomRecipe(id));
 
+export interface RecipesFilter{
+    id?: string;
+    name?: string;
+    ingredients?: string;
+}
+
 @Injectable()
 export class RecipesService {
 
     private recipes: Recipe[];
-    private readonly recipesSubject: Subject<Recipe[]>;
+    private readonly recipesSubject: BehaviorSubject<Recipe[]>;
     private readonly recipesObservable: Observable<Recipe[]>;
 
     constructor() {
-        this.recipesSubject = new Subject<Recipe[]>();
+        this.recipesSubject = new BehaviorSubject<Recipe[]>(getRandomRecipes());
         this.recipes = getRandomRecipes();
         this.recipesObservable = Rx.Observable.from([this.recipes]).merge(this.recipesSubject.asObservable());
     }
 
     getAllRecipes(): Observable<Recipe[]> {
         return this.recipesObservable;
+    }
+
+    getFilteredRecipes(filter: RecipesFilter): Recipe[]{
+        return this.recipes
+            .filter(r => r.id.toString().includes(filter.id))
+            .filter(r => r.name.includes(filter.name))
+            .filter(r => r.ingredients.map(i => Ingredient[i.ingredient]).reduce((l,r)=>`${l} ${r}`,"").includes(filter.name))
+    }
+
+    getRecipesSubject(){
+        return this.recipesSubject;
     }
 
     getRecipe(recipeId: number){
