@@ -10,9 +10,6 @@ export class RecipesListItemComponent {
     @Input()
     recipe: Recipe;
 
-    @Input()
-    selected: Boolean = undefined;
-
     getRecipeBadgeColor(recipe: Recipe) {
         const {ingredients: {length}} = recipe;
         return length < 5

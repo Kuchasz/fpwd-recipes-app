@@ -1,11 +1,15 @@
 <md-card>
     <header>Recipes</header>
-    <div class="action-buttons">
-        <button md-raised-button color="primary" (click)="openCreateRecipeDialog()">CREATE</button>
-        <button md-raised-button color="warn" [disabled]="selectedRecipeId === undefined" (click)="deleteRecipe(selectedRecipeId)">DELETE</button>
-    </div>
     <div>
-        <app-recipes-list-item *ngFor="let recipe of recipes" [selected]="recipe.id === selectedRecipeId" [recipe]="recipe"
+        <button md-raised-button color="primary" (click)="openCreateRecipeDialog()">CREATE</button>
+        <button md-raised-button color="warn" [disabled]="selectedRecipeId === undefined"
+                (click)="deleteRecipe(selectedRecipeId)">DELETE
+        </button>
+    </div>
+    <recipes-list-filter (filter)="filter = $event"></recipes-list-filter>
+    <div>
+        <app-recipes-list-item *ngFor="let recipe of filteredRecipes"
+                               [ngClass]="recipe.id === selectedRecipeId ? 'selected' : null" [recipe]="recipe"
                                (click)="selectRecipe(recipe.id)"></app-recipes-list-item>
     </div>
 </md-card>

@@ -16,6 +16,7 @@ import {RecipesListItemComponent} from "./recipes/components/recipes-list-item/r
 import {CreateRecipeDialogComponent} from "./recipes/components/create-recipe-dialog/create-recipe-dialog.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ControlsModule} from '../controls/controls.module';
+import {RecipesListFilterComponent} from "./recipes/components/recipes-list-filter/recipes-list-filter.component";
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import {ControlsModule} from '../controls/controls.module';
         RecipesListComponent,
         RecipesListItemComponent,
         RecipeDetailsComponent,
-        CreateRecipeDialogComponent
+        CreateRecipeDialogComponent,
+        RecipesListFilterComponent
     ],
     entryComponents:[
         CreateRecipeDialogComponent

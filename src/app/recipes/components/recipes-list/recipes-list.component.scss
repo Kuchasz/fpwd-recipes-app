@@ -1,10 +1,15 @@
-md-card {
-  > * :not(:first-child) {
-    margin: 32px 0px;
+:host {
+  md-card {
+
+    header {
+      font-size: 1.25em;
+    }
+
+    > * {
+      &:not(:first-child) {
+        margin: 32px 0px;
+      }
+    }
   }
-  action-buttons {
-  }
-  header {
-    font-size: 1.25em;
-  }
+
 }

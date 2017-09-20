@@ -1,18 +1,23 @@
-div {
+:host {
+
+  &.selected {
+    background-color: #eee;
+    span {
+      font-weight: bolder;
+    }
+  }
+
   cursor: pointer;
   padding: 8px 4px;
   display: flex;
   align-items: center;
   span {
     flex: 1;
-    .recipe-id{
+    .recipe-id {
       font-size: 0.75em;
     }
     header {
       font-size: 1em;
-    }
-    &.selected {
-      font-weight: bolder;
     }
   }
 

@@ -15,27 +15,35 @@ export class RecipesListComponent implements OnInit {
     select = new EventEmitter<number>();
     recipes: Recipe[];
     selectedRecipeId: number;
+    filter: string = "";
 
     constructor(readonly recipesService: RecipesService, readonly dialog: MdDialog) {
     }
 
     ngOnInit() {
-        this.recipesService.getAllRecipes().subscribe( recipes => this.recipes = recipes);
+        this.recipesService.getAllRecipes().subscribe(recipes => this.recipes = recipes);
     }
 
-    openCreateRecipeDialog(){
+    openCreateRecipeDialog() {
         const dialogWindow = this.dialog.open(CreateRecipeDialogComponent, {hasBackdrop: true});
-        dialogWindow.afterClosed().subscribe( ({addedRecipeId}: {addedRecipeId: number}) => {
-            if(addedRecipeId !== undefined) this.selectRecipe(addedRecipeId);
+        dialogWindow.afterClosed().subscribe(({addedRecipeId}: { addedRecipeId: number }) => {
+            if (addedRecipeId !== undefined) this.selectRecipe(addedRecipeId);
         });
     }
 
-    selectRecipe(recipeId: number){
+    get filteredRecipes(): Recipe[] {
+        const filter = this.filter.toLowerCase().trim();
+        return this.recipes.filter(r => r.name.toLowerCase().includes(filter)
+            || r.id.toString().toLowerCase().includes(filter)
+            || r.ingredients.length.toString().toLowerCase().includes(filter));
+    }
+
+    selectRecipe(recipeId: number) {
         this.selectedRecipeId = recipeId;
         this.select.emit(recipeId);
     }
 
-    deleteRecipe(recipeId: number){
+    deleteRecipe(recipeId: number) {
         this.selectRecipe(undefined);
         this.recipesService.delete(recipeId);
     }
